@@ -107,9 +107,8 @@ a { color: inherit; }
 .end {
   margin-top: 64px; padding-top: 20px;
   font-family: "JetBrains Mono", monospace;
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--ink-soft);
-  display: flex; justify-content: space-between; gap: 24px;
+  font-size: 20px; letter-spacing: 0.12em;
+  display: flex; justify-content: flex-end;
 }
-.end a { cursor: pointer; color: var(--ink); text-decoration: none; }
+.end a { cursor: pointer; color: var(--ink-soft); text-decoration: none; padding: 4px 0 4px 24px; }
 .end a:hover { color: var(--ink); }
