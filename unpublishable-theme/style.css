@@ -1,0 +1,15 @@
+/*
+Theme Name: Unpublishable
+Description: Correspondence — an epistolary, literary-minimalist theme for a personal blog of letters. Single narrow column on near-white paper, Libre Caslon Text for titles and body, JetBrains Mono for the standfirst, nav, and dates. No cards, no imagery, no comments.
+Author: Farida Adamu
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: unpublishable
+*/
+
+/* All theme styles live in assets/theme.css (enqueued by functions.php).
+   This file exists to register the theme with WordPress. */
