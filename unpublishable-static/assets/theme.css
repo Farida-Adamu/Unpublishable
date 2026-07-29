@@ -1,0 +1,408 @@
+/* ============================================================
+   Unpublishable — PARLOUR direction, Phase 1 static theme.
+   Ported from design_handoff_unpublishable/reference/parlour.jsx
+   (the CSS template literal is the source of truth).
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: "Space Grotesk", system-ui, sans-serif; }
+a { color: inherit; }
+::selection { background: #ffe85c; color: #000; }
+
+.site {
+  --paper: #d9d8c2;
+  --paper-soft: #e3e1cb;
+  --ink: #2a261e;
+  --ink-soft: #6b6458;
+  --rule: #2a261e;
+  background:
+    radial-gradient(120% 80% at 50% 0%, #c8d4c0 0%, #d4d2b8 38%, #c2b896 80%, #a89876 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  min-height: 100vh;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  padding: 14px;
+}
+.frame {
+  background: var(--paper);
+  border: 1.5px solid var(--rule);
+  min-height: calc(100vh - 28px);
+  padding: 0 24px 24px;
+  position: relative;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+/* Category → card colors. data-category drives --card-bg / --art-ink
+   on cards and on the essay-page root alike. */
+[data-category="POP CULTURE"] { --card-bg: #dde4f0; --art-ink: #2c4ab8; }
+[data-category="TECHNOLOGY"]  { --card-bg: #cfdfd1; --art-ink: #2a4a3c; }
+[data-category="IDENTITY"]    { --card-bg: #e9ddc4; --art-ink: #c14a1f; }
+[data-category="MEDIA"]       { --card-bg: #d4ddc0; --art-ink: #7a2e2e; }
+[data-category="BODY"]        { --card-bg: #e0d2d8; --art-ink: #5a3b8a; }
+[data-category="LANGUAGE"]    { --card-bg: #d8d2bf; --art-ink: #1e3d8f; }
+[data-category="CULTURE"]     { --card-bg: #e6d6c2; --art-ink: #1a1a1a; }
+
+/* Nav — sticky, becomes opaque on scroll. Wordmark fades in. */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0 10px;
+  margin: 0;
+  background: var(--paper);
+}
+.nav-wordmark {
+  font-family: "Major Mono Display", monospace;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: var(--ink);
+  background: none; border: 0; padding: 0; cursor: pointer;
+  text-decoration: none;
+  opacity: 0; transform: translateY(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+.nav.is-scrolled .nav-wordmark {
+  opacity: 1; transform: translateY(0); pointer-events: auto;
+}
+.nav-links {
+  display: flex; gap: 28px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  margin-left: auto;
+}
+.nav-links a { color: var(--ink); text-decoration: none; cursor: pointer; padding: 4px 0; border-bottom: 1px solid transparent; }
+.nav-links a:hover { border-bottom-color: var(--ink); }
+
+/* Hero — wordmark + tagline beneath, left-aligned, block-level */
+.hero {
+  padding: 8px 0 4px;
+  margin: 0;
+}
+.hero .word {
+  display: block;
+  font-family: "Major Mono Display", monospace;
+  font-size: clamp(80px, 13vw, 200px);
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+  color: var(--ink);
+  text-transform: lowercase;
+  font-weight: 400;
+}
+.tagline {
+  display: block;
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  margin: 0 0 16px;
+  padding: 0;
+  color: var(--ink);
+  max-width: 600px;
+  width: 100%;
+  text-align: left;
+}
+
+/* ---------------- GRIDS ---------------- */
+.grid-top {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+.grid-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* Base card */
+.card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--rule);
+  padding: 16px 16px 14px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.25s cubic-bezier(.2,.7,.2,1), box-shadow 0.25s;
+}
+.card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.card-cat {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink);
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.card-cat .card-n {
+  color: var(--ink-soft);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+}
+.card-ttl {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  margin: 14px 0 8px;
+  color: var(--ink);
+  text-wrap: balance;
+}
+/* The whole card is one click target: the title anchor stretches
+   over the card (above .card-read, which stays decorative). */
+.card-ttl a { color: inherit; text-decoration: none; }
+.card-ttl a::after { content: ""; position: absolute; inset: 0; z-index: 3; }
+.card-meta {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-soft);
+  display: flex; gap: 14px; align-items: center;
+  margin-bottom: 14px;
+}
+.card-meta .card-sep {
+  width: 3px; height: 3px; border-radius: 50%;
+  background: var(--ink-soft);
+  flex: none;
+}
+.card-img {
+  margin: auto -16px 0;
+  flex: 1;
+  min-height: 120px;
+  border-top: 1.5px solid var(--rule);
+  background: var(--card-bg);
+  position: relative;
+  overflow: hidden;
+}
+.card-img::after {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(20,20,20,0.07) 0.7px, transparent 0.9px);
+  background-size: 3px 3px;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.card-read {
+  position: absolute; right: 14px; bottom: 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  padding: 6px 10px;
+  display: inline-flex; align-items: center; gap: 8px;
+  z-index: 2;
+  transition: background 0.15s, color 0.15s;
+}
+.card-read .card-arr { transition: transform 0.2s ease; }
+.card:hover .card-read { background: var(--ink); color: var(--paper); }
+.card:hover .card-read .card-arr { transform: translateX(3px); }
+
+/* HERO card — spans 2x2, number small, BIG title */
+.card-hero {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  padding: 22px 24px 22px;
+  --card-bg: #b8c8e6;
+  --art-ink: #1a2f8a;
+}
+.card-hero .card-ttl {
+  font-size: clamp(40px, 4.4vw, 68px);
+  line-height: 1.0;
+  margin: 18px 0 12px;
+}
+.card-hero .card-dek {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--ink);
+  max-width: 38ch;
+  margin: 0 0 16px;
+}
+.card-hero .card-img { min-height: 240px; }
+
+/* Regular card — title is the dominant element */
+.card-regular .card-ttl {
+  font-size: 26px;
+  line-height: 1.05;
+}
+.card-regular { min-height: 320px; }
+
+/* Bottom-row cards a touch shorter to keep visual balance */
+.grid-bottom .card { min-height: 320px; }
+
+/* ---------------- Artwork ---------------- */
+.art { position: absolute; inset: 0; }
+.art svg { color: var(--art-ink); }
+
+/* Hero illustration — bold high-contrast geometry */
+.art-hero { position: absolute; inset: 0; overflow: hidden; }
+.art-hero .ring1 {
+  position: absolute;
+  width: 70%; aspect-ratio: 1;
+  left: 15%; top: 14%;
+  border-radius: 50%;
+  background: var(--art-ink);
+}
+.art-hero .ring2 {
+  position: absolute;
+  width: 42%; aspect-ratio: 1;
+  left: 29%; top: 28%;
+  border-radius: 50%;
+  background: var(--card-bg);
+}
+.art-hero .ring3 {
+  position: absolute;
+  width: 20%; aspect-ratio: 1;
+  left: 40%; top: 39%;
+  border-radius: 50%;
+  background: var(--art-ink);
+}
+.art-hero .bar {
+  position: absolute;
+  left: 0; right: 0;
+  height: 14px;
+  background: var(--art-ink);
+}
+.art-hero .bar1 { top: 6%; }
+.art-hero .bar2 { bottom: 8%; }
+.art-hero .square {
+  position: absolute;
+  background: var(--card-bg);
+  border: 4px solid var(--art-ink);
+}
+.art-hero .sq1 { left: 5%; bottom: 18%; width: 70px; height: 70px; transform: rotate(12deg); }
+.art-hero .sq2 { right: 6%; top: 22%; width: 50px; height: 50px; transform: rotate(-10deg); background: var(--art-ink); border: 0; }
+.art-hero .tri {
+  position: absolute;
+  right: 10%; bottom: 22%;
+  width: 0; height: 0;
+  border-left: 38px solid transparent;
+  border-right: 38px solid transparent;
+  border-bottom: 60px solid var(--art-ink);
+  transform: rotate(8deg);
+}
+
+.art-halftone .a { position: absolute; border-radius: 50%; }
+.art-halftone .a1 { width: 70%; height: 130%; left: -10%; top: -15%; background: var(--art-ink); opacity: 0.9; }
+.art-halftone .a2 { width: 60%; height: 100%; right: -20%; bottom: -30%; background: var(--art-ink); opacity: 0.5; mix-blend-mode: multiply; }
+.art-halftone .a3 { width: 24px; height: 24px; left: 60%; top: 30%; background: var(--card-bg); opacity: 0.9; }
+
+.art-wave svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.art-pill .a { position: absolute; border-radius: 999px; }
+.art-pill .a1 { width: 120%; height: 50%; left: -10%; top: 25%; background: var(--art-ink); }
+.art-pill .a2 { width: 50%; height: 50%; left: 25%; top: 25%; background: var(--card-bg); opacity: 0.6; border-radius: 999px; }
+
+.art-grid {
+  background-image: radial-gradient(var(--art-ink) 24%, transparent 26%);
+  background-size: 18px 18px;
+  background-position: 4px 4px;
+}
+.art-grid .a { position: absolute; background: var(--art-ink); }
+.art-grid .a1 { left: 40%; top: 30%; width: 36%; height: 36%; mix-blend-mode: multiply; opacity: 0.55; }
+
+.art-letters { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.art-letters .a {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 180px;
+  line-height: 1;
+  color: var(--art-ink);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  transform: rotate(-6deg);
+  user-select: none;
+}
+
+.art-cassette .a { position: absolute; }
+.art-cassette .strip { left: 0; right: 0; height: 14%; background: var(--art-ink); }
+.art-cassette .s1 { top: 22%; }
+.art-cassette .s2 { top: 42%; opacity: 0.5; }
+.art-cassette .s3 { top: 62%; }
+.art-cassette .reel { width: 38px; height: 38px; border-radius: 50%; background: var(--card-bg); border: 4px solid var(--art-ink); top: 32%; }
+.art-cassette .r1 { left: 18%; }
+.art-cassette .r2 { right: 18%; }
+
+.art-signal svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ---------------- Essay page ---------------- */
+.essay { max-width: 720px; margin: 0 auto; padding: 16px 32px 96px; }
+.essay-back {
+  display: inline-block;
+  background: none; border: 1.5px solid var(--rule); padding: 6px 12px;
+  font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink); cursor: pointer;
+  text-decoration: none;
+}
+.essay-back:hover { background: var(--ink); color: var(--paper); }
+.essay-hdr {
+  margin-top: 40px;
+  display: grid; grid-template-columns: auto 1fr; gap: 28px;
+  align-items: end;
+  padding-bottom: 24px; border-bottom: 1.5px solid var(--rule);
+}
+.essay-num {
+  font-family: "Major Mono Display", monospace;
+  font-size: clamp(80px, 11vw, 140px);
+  line-height: 0.86;
+  margin: 0;
+  color: var(--ink);
+  font-weight: 400;
+}
+.essay-meta {
+  padding-bottom: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.essay-meta div { padding: 4px 0; }
+.essay-meta b { color: var(--ink-soft); font-weight: 400; margin-right: 10px; }
+.essay-title {
+  font-family: "Instrument Serif", serif;
+  font-size: clamp(40px, 5.4vw, 64px);
+  font-weight: 400;
+  line-height: 1.04; letter-spacing: -0.02em;
+  margin: 28px 0 18px;
+}
+.essay-title em { font-style: normal; color: inherit; }
+.essay-dek {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 21px; line-height: 1.45;
+  color: var(--ink-soft);
+  max-width: 36ch;
+  margin: 0 0 36px;
+}
+.essay-img {
+  height: 280px;
+  border: 1.5px solid var(--rule);
+  background: var(--card-bg);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+.essay-body p {
+  font-family: "Instrument Serif", serif;
+  font-size: 21px; line-height: 1.55;
+  margin: 0 0 1.2em;
+  color: var(--ink);
+}
+.essay-body p:first-of-type::first-letter {
+  font-family: "Major Mono Display", monospace;
+  float: left; font-size: 72px; line-height: 0.9;
+  padding: 6px 14px 0 0; color: var(--art-ink);
+}
+.essay-end {
+  margin-top: 56px; padding-top: 20px; border-top: 1.5px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: center; gap: 24px;
+  font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+}
+.essay-end .next { background: var(--ink); color: var(--paper); padding: 10px 14px; cursor: pointer; border: 0; text-decoration: none; }
+.essay-end .next:hover { background: var(--art-ink); }
