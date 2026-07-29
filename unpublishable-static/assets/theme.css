@@ -16,6 +16,7 @@ a { color: inherit; }
   --ink: #161412;
   --ink-soft: #6b6660;
   --title-ink: #0e0d0b;
+  --accent: #a98963; /* light warm brown — hover accent on arrows */
   background: var(--paper);
   color: var(--ink);
   min-height: 100vh;
@@ -83,8 +84,9 @@ a { color: inherit; }
   font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--ink-soft);
   text-decoration: none;
+  transition: color 0.15s;
 }
-.back:hover { color: var(--ink); }
+.back:hover { color: var(--accent); }
 .letter-date {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
@@ -110,5 +112,5 @@ a { color: inherit; }
   font-size: 20px; letter-spacing: 0.12em;
   display: flex; justify-content: flex-end;
 }
-.end a { cursor: pointer; color: var(--ink-soft); text-decoration: none; padding: 4px 0 4px 24px; }
-.end a:hover { color: var(--ink); }
+.end a { cursor: pointer; color: var(--ink-soft); text-decoration: none; padding: 4px 0 4px 24px; transition: color 0.15s; }
+.end a:hover { color: var(--accent); }
